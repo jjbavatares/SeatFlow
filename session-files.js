@@ -5,13 +5,6 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   async function save(snapshot,name,env=window){
-    if(typeof env.showSaveFilePicker==='function'){
-      const handle=await env.showSaveFilePicker({suggestedName:name,types:[{description:'Sessió SeatFlow',accept:{'application/json':['.json']}}]});
-      const writable=await handle.createWritable();
-      try{await writable.write(snapshot);await writable.close();}
-      catch(error){try{await writable.abort();}catch{}throw error;}
-      return {confirmed:true,name:handle.name||name};
-    }
     const url=env.URL.createObjectURL(new env.Blob([snapshot],{type:'application/json'}));
     const link=env.document.createElement('a');
     link.href=url;link.download=name;link.hidden=true;env.document.body.append(link);
