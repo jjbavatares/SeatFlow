@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <title>SeatFlow</title>
+  <desc>Dos pupitres con sus sillas y una flecha que representa el cambio de lugar.</desc>
+  <defs>
+    <linearGradient id="green" x1="12" y1="5" x2="116" y2="128" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#279d66"/>
+      <stop offset="1" stop-color="#07543f"/>
+    </linearGradient>
+    <linearGradient id="desk" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#f2ffe6"/>
+      <stop offset="1" stop-color="#c4edbb"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="29" fill="url(#green)"/>
+  <rect x="1" y="1" width="126" height="126" rx="28" fill="none" stroke="#8ae1ac" stroke-opacity=".28" stroke-width="2"/>
+  <path d="M87 25c22 0 30 23 11 36L51 83c-17 8-16 25 1 25" fill="none" stroke="#78dca5" stroke-width="7" stroke-linecap="round"/>
+  <path d="m49 99 11 9-11 9" fill="none" stroke="#c0f6cb" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#053c2b" opacity=".25">
+    <rect x="20" y="29" width="45" height="28" rx="6"/>
+    <rect x="65" y="82" width="45" height="28" rx="6"/>
+  </g>
+  <g stroke="#c9f6d1" stroke-width="2">
+    <rect x="31" y="47" width="23" height="13" rx="6" fill="#84d49a"/>
+    <rect x="76" y="68" width="23" height="13" rx="6" fill="#84d49a"/>
+    <rect x="20" y="25" width="45" height="27" rx="5" fill="url(#desk)"/>
+    <rect x="65" y="78" width="45" height="27" rx="5" fill="url(#desk)"/>
+  </g>
+</svg>
