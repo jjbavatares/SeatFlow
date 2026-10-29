@@ -2,6 +2,14 @@
 
 Aplicació local, en català, per organitzar els llocs dels alumnes a l'aula. Primera versió de treball, amb interfície fosca en tons blaus.
 
+## Provar-la al navegador
+
+[Obrir SeatFlow](https://jjbavatares.github.io/SeatFlow/)
+
+La versió web processa els documents al navegador. Les sessions es desen amb el selector de fitxers o com a descàrregues, i s’obren amb «Obrir sessió desada». No es creen carpetes automàticament a l’escriptori des del web. Les llistes i les sessions no s’envien a GitHub. La còpia automàtica depèn del navegador i pot desaparèixer si se n’esborren les dades: desa un fitxer per conservar el treball.
+
+GitHub Pages publica la branca `main`, carpeta arrel; `.nojekyll` evita transformar els recursos. La versió local conserva el desament a Escriptori/SeatFlow.
+
 ## Iniciar l'aplicació
 
 Cal tenir **Node.js 20 o posterior** instal·lat. No cal instal·lar paquets amb `npm install`: les biblioteques del navegador ja estan incloses a `vendor/`.

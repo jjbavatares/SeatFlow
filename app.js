@@ -2,6 +2,7 @@
 (function(){
   'use strict';
   const D=SeatDomain,$=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const localServer=['127.0.0.1','localhost','[::1]'].includes(location.hostname);
   const STORAGE='seatflow-recovery-v1';let state=null,draft=[],draftText='',setupOrientation='vertical',history=[],future=[],selection=new Set(),pendingStudent=null,filter='pending',zoom=1,dirty=false,lastSaved='',saveTimer,toastTimer,drag=null,currentScreen='home',modalResolve=null;
   const measure=document.createElement('canvas').getContext('2d');
   const today=()=>{const p=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());return['year','month','day'].map(k=>p.find(x=>x.type===k).value).join('-');};
@@ -69,6 +70,7 @@
   async function openSession(file){if(file.size>5*1024*1024){toast('El fitxer de sessió és massa gran.');return;}try{const next=D.validate(JSON.parse(await file.text()));if(state&&dirty&&!await confirmAction('Obrir aquesta sessió substituirà el treball actual. Vols continuar?'))return;state=next;lastSaved=JSON.stringify(state);dirty=false;history=[];future=[];selection.clear();pendingStudent=null;zoom=1;screen('editor');changed();toast('Sessió oberta. Ja pots continuar treballant.');}catch(err){toast(err instanceof SyntaxError?'El fitxer no conté una sessió vàlida.':err.message);}}
   $('session-file').onchange=e=>{const file=e.target.files[0];e.target.value='';if(file)openSession(file);};
   async function chooseSavedSession(){
+    if(!localServer){$('session-file').click();return;}
     const buttons=['resume-btn','open-header','open-setup'].map($);buttons.forEach(b=>b.disabled=true);
     try{const response=await fetch('/api/sessions');const listing=await response.json();if(!response.ok)throw Error(listing.error||'No es pot llegir la carpeta SeatFlow.');let selectedName=null;
       const rows=listing.files.map((file,index)=>'<button type="button" class="saved-session-row" data-saved-index="'+index+'" aria-pressed="false"><span class="saved-session-name">'+esc(file.name)+'</span><span class="saved-session-date">'+esc(new Intl.DateTimeFormat('ca-ES',{dateStyle:'short',timeStyle:'short'}).format(new Date(file.modified)))+'</span></button>').join('');
@@ -82,12 +84,16 @@
   }
   async function saveSession(){
     if(!state)return false;const safe=state.meta.className.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9_-]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||'aula';const time=new Date().toTimeString().slice(0,8).replace(/:/g,'');
-    const ok=await modal('Desar una versió de la sessió',`<p>Pots posar un altre nom per conservar les versions anteriors. Cada sessió és un fitxer editable independent.</p><label>Nom del fitxer<input id="save-filename" maxlength="140" value="${esc(`SeatFlow-${safe}-${state.meta.date}-${time}`)}"></label><p class="small">Es desarà a la carpeta SeatFlow de l’escriptori, que es crearà automàticament. Si el nom ja existeix, es crearà una versió nova sense substituir-lo.</p>`,'Desar sessió');
+    const ok=await modal('Desar una versió de la sessió',`<p>Pots posar un altre nom per conservar les versions anteriors. Cada sessió és un fitxer editable independent.</p><label>Nom del fitxer<input id="save-filename" maxlength="140" value="${esc(`SeatFlow-${safe}-${state.meta.date}-${time}`)}"></label>${localServer?'<p class="small">Es desarà a la carpeta SeatFlow de l’escriptori, que es crearà automàticament. Si el nom ja existeix, es crearà una versió nova sense substituir-lo.</p>':'<p class="small">Tria on desar el fitxer o cerca’l a les descàrregues del navegador. Pots crear una carpeta SeatFlow al teu dispositiu i conservar-hi les versions amb noms diferents.</p>'}`,'Desar sessió');
     if(!ok)return false;const entered=$('save-filename').value.replace(/(?:\.seatflow)?\.json$/i,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^A-Za-z0-9_-]+/g,'-').replace(/^-|-$/g,'').slice(0,140);if(!entered){toast('Escriu un nom de fitxer.');return false;}
     const name=(/^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i.test(entered)?'SeatFlow-'+entered:entered)+'.seatflow.json',snapshot=JSON.stringify(state);
     const button=$('save-btn');button.disabled=true;button.textContent='Desant…';
-    try{const response=await fetch('/api/sessions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,session:JSON.parse(snapshot)})});const result=await response.json().catch(()=>({}));if(!response.ok)throw Error(result.error||'No es pot connectar amb el desament local.');lastSaved=snapshot;dirty=JSON.stringify(state)!==lastSaved;$('save-status').textContent='Sessió desada';toast('Sessió desada a Escriptori → SeatFlow: '+result.name);return !dirty;}
-    catch(err){toast('No s’ha pogut desar la sessió: '+err.message);return false;}
+    try{if(!localServer){
+      const result=await SeatSessionFiles.save(snapshot,name);
+      if(!result.confirmed&&!await modal('Comprova la descàrrega','<p>S’ha demanat la descàrrega de <strong>'+esc(result.name)+'</strong>. Comprova que el navegador l’ha desat abans de donar la sessió per guardada.</p>','El fitxer està desat'))return false;
+      lastSaved=snapshot;dirty=JSON.stringify(state)!==lastSaved;$('save-status').textContent='Sessió desada';toast('Sessió desada al teu dispositiu: '+result.name);return !dirty;
+    }const response=await fetch('/api/sessions',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,session:JSON.parse(snapshot)})});const result=await response.json().catch(()=>({}));if(!response.ok)throw Error(result.error||'No es pot connectar amb el desament local.');lastSaved=snapshot;dirty=JSON.stringify(state)!==lastSaved;$('save-status').textContent='Sessió desada';toast('Sessió desada a Escriptori → SeatFlow: '+result.name);return !dirty;}
+    catch(err){if(err.name!=='AbortError')toast('No s’ha pogut desar la sessió: '+err.message);return false;}
     finally{button.disabled=false;button.textContent='↓ Desar sessió';}
   }
   function fitText(text,width,maxSize=19){let size=maxSize;while(size>13){measure.font=`600 ${size}px Arial`;if(measure.measureText(text).width<=width)break;size--;};measure.font=`600 ${size}px Arial`;let label=text;if(measure.measureText(label).width>width){while(label.length&&measure.measureText(label+'…').width>width)label=label.slice(0,-1);label+='…';}return{text:label,size,truncated:label!==text};}
@@ -157,7 +163,7 @@
     if(exiting)return;
     if(state&&dirty){const save=await modal('Desar abans de sortir?','<p>Hi ha canvis sense desar. Vols guardar la sessió abans de tancar SeatFlow?</p><button type="button" class="danger" id="exit-without-save">Sortir sense desar</button>','Desar i sortir');const discard=$('modal').returnValue==='discard';if(!save&&!discard)return;if(save&&!await saveSession())return;}
     exiting=true;$('exit-btn').disabled=true;
-    try{const response=await fetch('/api/shutdown',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});if(!response.ok)throw Error('No es pot tancar el servidor local.');clearTimeout(saveTimer);if(state){try{localStorage.removeItem(STORAGE);}catch{}}state=null;dirty=false;document.querySelectorAll('.screen,.app-header').forEach(node=>node.hidden=true);const done=document.createElement('main');done.className='closed-screen';done.innerHTML='<h1>SeatFlow s’ha tancat.</h1><p>El servidor local està aturat. Ja pots tancar aquesta pestanya.</p><p>Per tornar a començar, obre Inicia-SeatFlow.cmd.</p>';document.body.append(done);}
+    try{if(localServer){const response=await fetch('/api/shutdown',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});if(!response.ok)throw Error('No es pot tancar el servidor local.');}clearTimeout(saveTimer);if(state){try{localStorage.removeItem(STORAGE);}catch{}}state=null;dirty=false;document.querySelectorAll('.screen,.app-header').forEach(node=>node.hidden=true);const done=document.createElement('main');done.className='closed-screen';done.innerHTML=localServer?'<h1>SeatFlow s’ha tancat.</h1><p>El servidor local està aturat. Ja pots tancar aquesta pestanya.</p><p>Per tornar a començar, obre Inicia-SeatFlow.cmd.</p>':'<h1>SeatFlow s’ha tancat.</h1><p>Ja pots tancar aquesta pestanya.</p><a href="./" class="primary">Tornar a obrir SeatFlow</a>';document.body.append(done);}
     catch(err){exiting=false;$('exit-btn').disabled=false;toast(err.message);}
   };
   $('print-btn').onclick=printDocument;$('save-btn').onclick=saveSession;
@@ -167,5 +173,6 @@
   document.addEventListener('keydown',e=>{if(currentScreen!=='editor'||$('modal').open||e.target.matches('input,textarea,select'))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='y'){e.preventDefault();redo();}else if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveSession();}else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();deleteSelection();}else if(e.key==='Escape'){pendingStudent=null;selection.clear();render();}else if(e.key.toLowerCase()==='r'){rotateSelection(e.shiftKey?-45:45);}});
   window.addEventListener('beforeunload',e=>{if(state&&dirty){e.preventDefault();e.returnValue='';}});
   function hero(){const s=D.create({className:'',teacher:'',date:today(),orientation:'horizontal',count:20},[]);D.buildLayout(s,20,'groups4');for(const it of s.items.filter(i=>i.kind==='desk'))it.student=null;$('hero-room').innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 960" aria-hidden="true">${scene(s,false,true)}</svg>`;}
+  if(!localServer){document.querySelector('.local-badge').innerHTML='<span></span>Versió web';$('resume-btn').textContent='Obrir sessió desada';}
   hero();checkRecovery();$('date-input').value=today();
 })();
