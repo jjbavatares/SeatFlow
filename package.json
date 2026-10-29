@@ -1,0 +1,13 @@
+{
+  "name": "seatflow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Organitzador local de llocs dels alumnes a l'aula",
+  "scripts": {
+    "start": "node server.cjs",
+    "test": "node --test domain.test.cjs file-drop.test.cjs roster-columns.test.cjs session-store.test.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

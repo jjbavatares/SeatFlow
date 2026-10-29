@@ -1,0 +1,50 @@
+SEATFLOW - Primera versio local
+
+INICIAR
+Fes doble clic a Inicia-SeatFlow.cmd. S'obre http://127.0.0.1:48765 al navegador.
+Cal Node.js instal·lat a l'ordinador. Aquesta versio no necessita cap instal·lacio de paquets, compte ni servei al nuvol. El servidor nomes escolta al propi ordinador.
+Per obrir manualment: node server.cjs
+
+FUNCIONAMENT
+1. Introduccio.
+2. Classe, tutor opcional, data, orientacio, nombre de pupitres i revisio de noms. Tambe es pot obrir una sessio iniciada sense omplir cap camp.
+3. Editor amb alumnes a l'esquerra, aula al centre i eines a la dreta.
+
+NOMS
+Escriu o enganxa un alumne per linia, o importa PDF amb text, DOCX, XLSX (primer full), CSV o TXT. La deteccio de nom i primer cognom es orientativa: revisa la llista i els casos destacats. No s'admeten PDF escanejats ni formats DOC/XLS antics.
+Arrossega el nom al pupitre o selecciona l'alumne i toca el pupitre. Els noms tenen un maxim de dues linies: nom i primer cognom.
+Si el desti esta ocupat, apareix un simbol de prohibit; el nom arrossegat queda pendent i l'alumne que ja hi havia es mante.
+Arrossega el text d'un alumne assegut per canviar-lo de taula o retornar-lo a la llista. Tambe pots seleccionar la taula i fer servir Retirar el nom.
+Els noms molt llargs es redueixen fins al minim establert; si encara no caben, es mostren abreujats amb un indicador. Revisa el nom visible o amplia la mida del pupitre.
+
+ESPAI I ELEMENTS
+La planta es orientativa, sense escala real. Professor i pissarra inicialment a baix. Portes, finestres i pissarres s'ajusten a la paret mes propera en moure-les.
+Parella vertical: 3 parelles a l'ample. Horitzontal: 5 parelles a l'ample. Files cap al fons segons el total.
+Les distribucions predefinides no impliquen que una aula real compleixi aquests espais.
+Els canvis de distribucio demanen confirmacio i es poden desfer. No es redueixen els pupitres automaticament si no caben.
+Dibuixa un rectangle arrossegant sobre el fons per seleccionar pupitres; fes servir Agrupar i Desagrupar. Clic sobre un grup el selecciona sencer. Majuscules+clic amplia la seleccio.
+Maxim dues portes i dues taules de professor. Una marca blava identifica la taula principal; es pot canviar a l'altra. Els noms segueixen el gir dels pupitres i dels grups per mantenir-se dins del taulell; tambe es pot escollir una orientacio manual.
+Per eliminar un pupitre, primer retira'n el nom. Els grups es mouen i giren junts.
+Zoom i mode de focus permeten veure millor els noms en pantalles petites.
+
+DESAR I RECUPERAR
+Desar sessio crea automaticament la carpeta SeatFlow a l'escriptori i hi guarda un fitxer .seatflow.json editable, amb alumnes, taules, grups i elements. Pots triar el nom abans de desar. Si ja existeix, afegeix -v2, -v3, etc. sense sobreescriure versions anteriors.
+Obrir sessio recupera totes les dades directament a l'editor. Els fitxers es validen abans de carregar-los.
+Hi ha una copia de recuperacio en aquest navegador (localStorage). No substitueix desar una sessio: pot desapareixer en netejar les dades del navegador i no es comparteix entre navegadors.
+
+IMPRIMIR
+A4, orientacio automatica segons l'aula, color o blanc i negre. La versio en blanc i negre te les superficies blanques, sense textura de fusta.
+Al dialeg del navegador, selecciona Desar com a PDF si vols el document imprimible. Desactiva les capcaleres i peus del navegador.
+
+DRECERES
+Ctrl+Z desfer; Ctrl+Y o Ctrl+Maj+Z refer; Ctrl+S desar; Supr eliminar; R girar 45 graus; Maj+R girar -45 graus; Esc cancel·lar la seleccio.
+
+PRIVACITAT I PORTABILITAT
+Cap dada s'envia a Internet. Biblioteques de lectura incloses a vendor (PDF.js i JSZip, amb llicencies). Els fitxers de l'aplicacio inclouen copies dels recursos necessaris: es pot moure tota la carpeta junta.
+Versio de prova: cal revisar visualment la llegibilitat de cada distribucio i la vista previa d'impressio abans d'utilitzar-la a l'aula.
+
+CONTROLS DE VISTA I SORTIDA
+Les lupes + i - apropen o allunyen el planol. Vista completa torna a mostrar tota la classe. Pantalla completa amplia nomes el panell de l'aula; Tornar o Esc en surt.
+Reixeta mostra les guies. Ajustar fixa els moviments a la quadrícula sense deformar els grups. Alt permet moure lliurement. Les guies no s'imprimeixen.
+Un grup restant de quatre alumnes en una distribucio de sis es col·loca en un bloc 2x2.
+Sortir comprova els canvis: Desar i sortir, Cancel·lar o Sortir sense desar. Si el desament falla o es cancel·la, el programa es mante obert. La sortida atura el servidor local; la pestanya del navegador es pot haver de tancar manualment.

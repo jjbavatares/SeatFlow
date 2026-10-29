@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="466" height="317" viewBox="-233 -158.5 466 317" role="img"><title>taula-professor - 0 graus</title><defs><linearGradient id="wood" x2="0" y2="1"><stop stop-color="#fae6c4"/><stop offset="1" stop-color="#efd0a0"/></linearGradient></defs><g transform="rotate(0)"><g transform="translate(0 -25)"><g stroke="#786954" stroke-width="2" stroke-linejoin="round">
+<rect x="-77" y="74" width="154" height="91" rx="15" fill="#e8c99d"/>
+<rect x="-84" y="92" width="11" height="55" rx="5" fill="#cbc9c3"/><rect x="73" y="92" width="11" height="55" rx="5" fill="#cbc9c3"/>
+<rect x="-75" y="77" width="150" height="72" rx="12" fill="url(#wood)"/>
+<path d="M-76 145 Q0 157 76 145 L76 164 Q0 176 -76 164Z" fill="#e4bf87"/>
+<rect x="-225" y="-125" width="450" height="220" rx="7" fill="#d5ac76"/>
+<rect x="-220" y="-120" width="440" height="210" rx="5" fill="url(#wood)" stroke="#b48c58" stroke-width="1.2"/>
+</g><g fill="none" stroke="#bd9056" stroke-opacity=".13" stroke-width="1.1"><path d="M-204 -82 Q-90 -91 15 -80 T204 -83 M-207 -37 Q-96 -29 10 -38 T209 -34 M-207 18 Q-105 9 6 20 T208 16 M-204 64 Q-88 74 21 63 T205 67"/></g></g></g></svg>

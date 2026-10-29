@@ -1,0 +1,32 @@
+# Local work and student data must never be committed.
+*.seatflow.json
+*.seatflow
+sessions/
+sessions-desades/
+*.pdf
+*.docx
+*.xlsx
+*.xls
+*.csv
+*.tsv
+
+# Generated checks, sample rosters and screenshots.
+qa/
+comprovacions.html
+vista-previa.png
+server-check.cjs
+screenshots/
+output/
+tmp/
+
+# Credentials, dependencies and OS/editor files.
+.env
+.env.*
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+~$*
+.vscode/
+.idea/

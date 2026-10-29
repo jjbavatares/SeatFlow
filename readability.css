@@ -1,0 +1,77 @@
+/* Readable screen controls; the A4 print layout keeps its own typography. */
+@media screen {
+  :root{--muted:#b1c3db}
+  body{font-size:16px}
+  button{font-size:15px}
+  input,textarea,select{font-size:16px}
+  label,legend{font-size:15px}
+  label>small,.small,.optional{font-size:14px}
+  .quiet{color:#c5d9f3}
+  .eyebrow{font-size:13px}
+  .local-badge{font-size:14px}
+  .home-description{font-size:18px}
+  .home-features,.home-footer{font-size:14px;line-height:1.6}
+  .hero-top,.hero-bottom{font-size:13px;line-height:1.5}
+  .hero-chip{font-size:11px;white-space:nowrap}
+  .page-heading p:last-child{font-size:16px;line-height:1.6}
+  .orientation-option small{font-size:14px;line-height:1.5}
+  .info-note{font-size:15px}
+  .pill{font-size:13px}
+  .review-row{font-size:14px;grid-template-columns:25px minmax(0,1fr) minmax(0,1fr) 30px}
+  .review-row input{font-size:15px;min-width:0;padding:9px 7px}
+  .roster-dropzone strong{font-size:16px}
+  .roster-dropzone>span:not(.drop-icon),.roster-dropzone small{font-size:14px;line-height:1.5}
+  .workspace{grid-template-columns:250px minmax(360px,1fr) 280px}
+  .focused .workspace{grid-template-columns:minmax(360px,1fr)}
+  .panel-heading h2{font-size:17px}
+  .search-label input{font-size:16px}
+  .student-tabs{gap:17px}
+  .student-tabs button{font-size:15px}
+  .panel-help{font-size:14px;line-height:1.55;color:#b4c8e2}
+  .student-row{font-size:15px;padding:11px 7px;line-height:1.4}
+  .student-initial{font-size:13px;min-width:33px;height:33px}
+  .panel-bottom{font-size:14px;line-height:1.5}
+  .panel-bottom .quiet{font-size:15px}
+  .empty-students{font-size:15px}
+  .canvas-toolbar{flex-wrap:wrap;row-gap:5px}
+  .toolbar-group{flex-wrap:wrap}
+  .toolbar-group .quiet{font-size:14px;padding:9px 8px;line-height:1.35}
+  .canvas-footer{font-size:13px;line-height:1.45;flex-wrap:wrap;gap:5px 12px}
+  .tool-section h3{font-size:14px;letter-spacing:.07em}
+  .compact-label{font-size:15px;gap:8px}
+  .compact-label select{font-size:15px;width:135px;padding:9px 6px}
+  .compact-label input{font-size:16px;width:78px;padding:9px 7px}
+  .layout-grid button,.add-grid button{font-size:15px;line-height:1.4;padding:11px 4px;overflow-wrap:anywhere}
+  .range-label{font-size:15px;line-height:1.5}
+  .rotation-row button,.full{font-size:15px}
+  #text-angle-label{flex-direction:column;align-items:stretch}
+  #text-angle-label select{width:100%}
+  #modal-body>p{font-size:16px}
+  #modal-body .small{font-size:14px}
+  #toast{font-size:16px}
+  #drag-name{font-size:15px}
+  .in-editor .editor-heading p:last-child{font-size:14px}
+  .in-editor .editor-actions button,.in-editor .header-actions button{font-size:15px;line-height:1.35;padding:10px 12px}
+  .in-editor .app-header{gap:14px}
+  @media(max-width:1100px){
+    .workspace{grid-template-columns:210px minmax(300px,1fr) 245px}
+    .toolbar-group .quiet{padding:8px 6px}
+    .in-editor .editor-actions button,.in-editor .header-actions button{font-size:14px;padding:9px 8px}
+    .in-editor .editor-heading p:last-child{font-size:13px}
+    .in-editor .app-header{gap:10px}
+  }
+  @media(max-width:800px){
+    .workspace{grid-template-columns:190px minmax(290px,1fr) 225px;min-width:725px}
+    .in-editor .editor-actions button,.in-editor .header-actions button{font-size:14px;padding:8px 6px}
+    .in-editor .editor-heading p:last-child{font-size:13px}
+    .in-editor .app-header{gap:8px}
+    .hero-top,.hero-bottom{flex-wrap:wrap}
+    .hero-chip{margin-left:0}
+  }
+}
+
+@media screen{.home-buttons{flex-wrap:wrap;align-items:center}.home-buttons #recover-local-btn{flex-basis:100%;text-align:left;padding-left:0;color:#b7cee9}}
+
+@media screen{.saved-session-folder{padding:12px;background:#0a192a;border:1px solid #345273;border-radius:8px;overflow-wrap:anywhere;font-size:14px!important;color:#b8d2f1!important}.saved-session-list{max-height:42vh;overflow:auto;border:1px solid #354f6e;border-radius:10px;padding:7px;margin:15px 0}.saved-session-row{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;padding:13px 10px;margin:3px 0;border:1px solid transparent;color:#dcecff;background:#152a43;font-size:15px}.saved-session-row:hover,.saved-session-row.active{background:#284f7b;border-color:#8abaff}.saved-session-name{overflow-wrap:anywhere}.saved-session-date{font-size:13px;color:#b4cae4;white-space:nowrap}}
+@media screen{.canvas-panel:fullscreen{width:100vw;height:100vh;border:0;border-radius:0;background:#101f32}.canvas-toolbar .active{background:#244c78;color:#e5f2ff}.canvas-toolbar #zoom-in,.canvas-toolbar #zoom-out{font-size:18px;width:43px;white-space:nowrap}.canvas-panel:fullscreen .canvas-scroll{padding:24px}.closed-screen{max-width:700px;margin:15vh auto;padding:35px;text-align:center}.closed-screen h1{font-size:32px}.closed-screen p{font-size:17px;line-height:1.7;color:#bdd1ea}#exit-btn{color:#ffd2d4;border:1px solid #694653}.canvas-toolbar{column-gap:10px}.canvas-toolbar>.toolbar-group{gap:4px}}
+@media screen{.canvas-toolbar #zoom-in,.canvas-toolbar #zoom-out{display:inline-flex;justify-content:center;align-items:center;gap:2px}}
